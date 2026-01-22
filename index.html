@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Digital Clock & Stopwatch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #e1f5fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+
+        .clock-container, .stopwatch-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            padding: 25px 30px;
+            margin: 15px;
+            text-align: center;
+            width: 300px;
+        }
+
+        #clockDisplay, #stopwatchDisplay {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #00796b;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px 0;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #ffffff;
+        }
+
+        #startBtn {
+            background-color: #388e3c;
+        }
+
+        #startBtn:hover { background-color: #2e7d32; }
+
+        #stopBtn {
+            background-color: #f57c00;
+        }
+
+        #stopBtn:hover { background-color: #ef6c00; }
+
+        #resetBtn {
+            background-color: #d32f2f;
+        }
+
+        #resetBtn:hover { background-color: #c62828; }
+
+        .author-info {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Digital Clock & Stopwatch</h1>
+
+    <div class="clock-container">
+        <h2>Current Time</h2>
+        <div id="clockDisplay">00:00:00</div>
+    </div>
+
+    <div class="stopwatch-container">
+        <h2>Stopwatch</h2>
+        <div id="stopwatchDisplay">00:00:00</div>
+        <div class="buttons">
+            <button id="startBtn" onclick="startStopwatch()">Start</button>
+            <button id="stopBtn" onclick="stopStopwatch()">Stop</button>
+            <button id="resetBtn" onclick="resetStopwatch()">Reset</button>
+        </div>
+    </div>
+
+    <div class="author-info">
+        <p>Author: Chinedu Emmanuel</p>
+        <p>Matric Number: 24/15923</p>
+        <p>Department: Software Engineering</p>
+    </div>
+
+    <script>
+        // ----- DIGITAL CLOCK -----
+        const clockDisplay = document.getElementById("clockDisplay");
+
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            clockDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // Initialize immediately
+
+        // ----- STOPWATCH -----
+        let stopwatchSeconds = 0;
+        let stopwatchInterval = null;
+        const stopwatchDisplay = document.getElementById("stopwatchDisplay");
+
+        function formatTime(timeInSeconds) {
+            const hrs = String(Math.floor(timeInSeconds / 3600)).padStart(2, '0');
+            const mins = String(Math.floor((timeInSeconds % 3600) / 60)).padStart(2, '0');
+            const secs = String(timeInSeconds % 60).padStart(2, '0');
+            return `${hrs}:${mins}:${secs}`;
+        }
+
+        function updateStopwatchDisplay() {
+            stopwatchDisplay.textContent = formatTime(stopwatchSeconds);
+        }
+
+        function startStopwatch() {
+            if (!stopwatchInterval) {
+                stopwatchInterval = setInterval(() => {
+                    stopwatchSeconds++;
+                    updateStopwatchDisplay();
+                }, 1000);
+            }
+        }
+
+        function stopStopwatch() {
+            clearInterval(stopwatchInterval);
+            stopwatchInterval = null;
+        }
+
+        function resetStopwatch() {
+            stopStopwatch();
+            stopwatchSeconds = 0;
+            updateStopwatchDisplay();
+        }
+
+        updateStopwatchDisplay(); // Initialize display
+    </script>
+
+</body>
+</html>
